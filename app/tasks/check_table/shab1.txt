@@ -1,0 +1,54 @@
+select t1.name as "Название таблицы", t1.mrf_id as "МРФ ИД",
+t1.sr_sum as "Средняя сумма за промежуток", t1.cnt as "Кол-во строк 1",
+t1.max_eff_dttm as "Дата начала промежутка 1", t1.min_eff_dttm as "Дата конца промежутка 1",
+t2.sr_sum as "Средняя сумма за промежуток", t2.cnt as "Кол-во строк 2",
+t2.max_eff_dttm as "Дата начала промежутка 2", t2.min_eff_dttm as "Дата конца промежутка 2",
+case when t1.cnt is not null and t2.cnt is not null then abs(1.0*(t1.cnt/t2.cnt-1)*100) else 100 end as "Отклониение 1 среза от 2",
+case when t1.sr_sum is not null and t2.sr_sum is not null then abs(1.0*(t1.sr_sum/t2.sr_sum-1)*100) else 100 end as "Отклонение сумм 1 среза от 2"
+from
+(
+	select * from table_mrf_id_not_centr
+	where mrf_id = {0}
+) t_mrf
+left join
+(
+	select 'ZB2C_CHD_TFCT_DMNT' as name, mrf_id, sum(charge_rub)/count(*) as sr_sum, count(*) as cnt,
+	max(eff_dttm) as max_eff_dttm, min(eff_dttm) as min_eff_dttm
+	from rtk_b2c.ZB2C_CHD_TFCT_DMNT
+	where 	charge_rub <> 0
+			and (
+					(
+						extract(day from current_date) > 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -2)), 1) and last_day(add_months(current_date, -1))
+					)
+				or
+					(
+						extract(day from current_date) <= 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -3)), 1) and last_day(add_months(current_date, -2))
+					)
+				)
+				and mrf_id = {0}
+				and {1}
+	group by mrf_id
+) t1 on t1.mrf_id = t_mrf.mrf_id
+left join
+(
+	select 'ZB2C_CHD_TFCT_DMNT' as name, mrf_id, sum(charge_rub)/count(*) as sr_sum, count(*) as cnt,
+	max(eff_dttm) as max_eff_dttm, min(eff_dttm) as min_eff_dttm
+	from rtk_b2c.ZB2C_CHD_TFCT_DMNT
+	where 	charge_rub <> 0
+			and (
+					(
+						extract(day from current_date) > 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -3)), 1) and last_day(add_months(current_date, -2))
+					)
+				or
+					(
+						extract(day from current_date) <= 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -4)), 1) and last_day(add_months(current_date, -3))
+					)
+				)
+			and mrf_id = {0}
+			and {1}
+	group by mrf_id
+) t2 on t1.name=t2.name and t1.mrf_id=t2.mrf_id;

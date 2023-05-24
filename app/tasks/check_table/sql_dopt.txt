@@ -1,0 +1,15 @@
+select 'rtk_b2c.ZB2C_CHD_TFCT_DOPT' as name_ish_t,'rtk_b2c.ZB2C_CHD_TFCT_DOPT' as name_t
+,  count(*) as cnt, max(eff_dttm) as max_st, min(eff_dttm) as min_st
+	from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where 	(
+				weekday(current_date) >= 3
+				and eff_dttm between add_days(current_date, -1*weekday(current_date)-7) and add_days(current_date, -1*weekday(current_date)-1)
+			)
+			or
+			(
+				weekday(current_date) < 3
+				and eff_dttm between add_days(current_date, -1*weekday(current_date)-14) and add_days(current_date, -1*weekday(current_date)-8)
+			)
+	        and mrf_id = {0}
+			and {1}
+	group by mrf_id

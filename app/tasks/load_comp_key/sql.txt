@@ -1,0 +1,776 @@
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_VIP_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_VIP_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+		select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+		join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+		where ("Продукт1" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт2" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт3" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт4" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт5" in ('VIP','КиноVIP','Настрой кино'))
+		and t1.account <> '?'
+		and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+		and t1.polldate > ADD_MONTHS(current_date, -6)) t1--дата полгода назад
+	left join (
+--клиенты которые говорили нет за 6 месяцев
+		select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+		join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+		where ("Продукт1" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт2" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт3" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт4" in ('VIP','КиноVIP','Настрой кино')
+		or "Продукт5" in ('VIP','КиноVIP','Настрой кино'))
+		and t1.account <> '?'
+		and t1.pollduration>=10
+		and t1.pollresult = 'Произведен обзвон. Отказ'
+		and t1.polldate > ADD_MONTHS(current_date, -6)) --дата полгода назад
+	t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);
+
+--ТВ
+--Не зафиксирован отказ от покупки в кампаниях ИТМ по допродаже ТВ
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_TV_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_TV_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('ТВ')
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate > ADD_MONTHS(current_date, -6)) t1--дата полгода назад
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('ТВ')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);
+
+--КПП
+--Не зафиксирован отказ от покупки в кампаниях ИТМ по допродаже конвергента в 2021 году
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_KONV_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_KONV_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where ("Группа 1" in ('МВНО','МВНО+ТВ','МВНО+ТВ+ШПД','ТВ+МВНО'))
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate >= ADD_MONTHS(current_date, -18)
+and t1.polldate < ADD_MONTHS(current_date, -6)) t1
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where ("Группа 1" in ('МВНО','МВНО+ТВ','МВНО+ТВ+ШПД','ТВ+МВНО'))
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate >= ADD_MONTHS(current_date, -18)
+and t1.polldate < ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);
+
+--Книги
+--Не фиксировался отказ от покупки книг в 2021 году
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_BOOK_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_BOOK_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Книги')
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate >= ADD_MONTHS(current_date, -18)
+and t1.polldate < ADD_MONTHS(current_date, -6)) t1--дата полгода назад
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Книги')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate >= ADD_MONTHS(current_date, -18)
+and t1.polldate < ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);
+
+--ТВ2
+--Не было взаимодействия в кампаниях по продаже ТВ-тарифа "Минимум" (согласен, отказ)
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'TV2_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'TV2_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select
+t1.accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct t1.account from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where ("Продукт1" in ('Минимум')
+or "Продукт2" in ('Минимум')
+or "Продукт3" in ('Минимум')
+or "Продукт4" in ('Минимум')
+or "Продукт5" in ('Минимум'))
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult in ('Произведен обзвон. Отказ','Произведен обзвон. Согласен')
+and t1.polldate > ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.accn_id = t2.account
+where t2.account is NULL);
+
+--Минимум
+--Зафиксирован отказ от покупки в кампаниях ИТМ по допродаже ТВ
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_MINIMUM_TV_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_MINIMUM_TV_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from (
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('ТВ')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6)); --дата полгода назад
+
+--Гарантия
+--Не было зафиксировано отказов от покупки Гарантии+ за последние полгода
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_GATANT_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_GATANT_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+t1.account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account, t1.namebas
+from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Гарантия+')
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate > ADD_MONTHS(current_date, -6)) t1--дата полгода назад
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Гарантия+')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL;
+
+--Моно МВНО
+--Абоненты отказались от ТВ дважды за 2021 год
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'MONO_MBHO_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'MONO_MBHO_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from (
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('ТВ')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6) --дата полгода назад
+group by t1.account
+having count(*)>=2);
+
+--Лицей
+--Не фиксировался отказ от покупки лицея за последние полгода
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_LICEY_27_06_2022';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_LICEY_27_06_2022' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from (
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Лицей')
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate > ADD_MONTHS(current_date, -6)) t1--дата полгода назад
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where "Группа 1" in ('Лицей')
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6)) --дата полгода назад
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'WINK_5_IN_1_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'WINK_5_IN_1_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум|vip|киномания|more.tv'
+and eff_dttm >= ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_AOPT
+where lower(optn_name_full) LIKE_REGEXPR 'viasat|суперхиты|для.киноманов|wink.5.в.1|start'
+and eff_dttm >= ADD_MONTHS(current_date, -2)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Нет пакетов: максимальный, максимум, премиум, vip, viasat, суперхиты, киномания, для киноманов, wink 5в1,
+-- для ценителей, твой премьерный, для развлечений, трансформер акция
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'VIP_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'VIP_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум|vip|киномания|more.tv|твой.премьерный|для.развлечений'
+and eff_dttm >= ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_AOPT
+where lower(optn_name_full) LIKE_REGEXPR 'viasat|суперхиты|для.киноманов|wink.5.в.1|start|суперхиты|для.ценителей|акция.*трансформер'
+and eff_dttm >= ADD_MONTHS(current_date, -2)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Нет пакетов: Максимальный, максимум, премиум, суперхиты, для киноманов, wink 5в1, start, для ценителей
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'START_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'START_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум|'
+and eff_dttm >= ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_AOPT
+where lower(optn_name_full) LIKE_REGEXPR 'суперхиты|для.киноманов|wink.5.в.1|start|для.ценителей'
+and eff_dttm >= ADD_MONTHS(current_date, -2)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Нет пакетов: Максимальный, максимум, премиум, суперхиты, настрой кино, трансформер, для праздников,
+--подписка лицей|vod лицей, детский клуб, каникулы, выгодная фильмотека
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'WINK_FOR_KIDS_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'WINK_FOR_KIDS_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум|трансформер|лицей|каникулы'
+and eff_dttm >= ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_AOPT
+where lower(optn_name_full) LIKE_REGEXPR 'суперхиты|настрой.кино|для.праздников|детский.клуб|выгодная.фильмотека'
+and eff_dttm >= ADD_MONTHS(current_date, -2)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Нет пакетов: Максимальный, максимум, премиум, настрой кино
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'SET_UP_CHINEMA_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'SET_UP_CHINEMA_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум'
+and eff_dttm >= ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_DOPT
+where lower(optn_name_full) LIKE_REGEXPR 'настрой.кино'
+and srvs_type = 'IP-TV'
+and status = 'Подключение'
+and eff_dttm >= ADD_MONTHS(current_date, -2)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Нет пакетов: Максимальный, максимум, премиум, трансформер
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'TRANSFORM_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'TRANSFORM_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(select distinct accn_id
+from RTK_B2C.STG_ZB2C_CHD_TFCT_ALLTPB
+where lower(tp_full) LIKE_REGEXPR 'максимальный|максимум|премиум|трансформер'
+and eff_dttm >= ADD_MONTHS(current_date, -6)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null);
+
+--Никогда не было подключенного антивируса от Dr.Web и Kaspersky Safe Kids
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_WEB_AND_KASP_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_WEB_AND_KASP_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_DOPT
+where lower(optn_name_full) LIKE_REGEXPR 'dr.web|dr. Web|доктор web|safe kids|safe_kids|SafeKids'
+and status = 'Подключение') t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null
+and eff_dttm>=ADD_MONTHS(current_date, -2));
+
+--После 01.01.2020 не имел подключенных антивирусов от производителя Kaspersky
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_KASP_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_KASP_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join(
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_DOPT
+where lower(optn_name_full) LIKE_REGEXPR 'kasp.*int.*sec|kis|safe kids|safe_kids|SafeKids|kasper'
+and status = 'Подключение'
+and eff_dttm>=ADD_MONTHS(current_date, -6)) t2 on t1.accn_id = t2.accn_id
+where t2.accn_id is null
+and eff_dttm>=ADD_MONTHS(current_date, -2));
+
+--Клиенты, которые уже пользовались тарифом Минимум в течение последних 6 месяцев
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NOT_MINIMUM_6_MONTH_27_06_22';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NOT_MINIMUM_6_MONTH_27_06_22' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from
+(
+select t1.accn_id from RTK_B2C.STG_ZB2C_CHD_TFCT_CLIENT_PROF t1
+join(
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_DOPT
+where lower(optn_name_full) LIKE_REGEXPR 'минимальный|минимум'
+and eff_dttm>=ADD_MONTHS(current_date, -6)
+union all
+select distinct accn_id
+from RTK_B2C.ZB2C_CHD_TFCT_AOPT
+where lower(optn_name_full) LIKE_REGEXPR 'минимальный|минимум'
+and eff_dttm>=ADD_MONTHS(current_date, -6)
+) t2 on t1.accn_id = t2.accn_id
+and eff_dttm >= ADD_MONTHS(current_date, -6));

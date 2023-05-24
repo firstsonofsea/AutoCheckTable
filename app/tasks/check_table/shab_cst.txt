@@ -1,0 +1,15 @@
+select t1.name as "Название таблицы",
+t1.cnt as "Кол-во строк 1", t1.max_st as "Дата начала промежутка 1", t1.min_st as "Дата конца промежутка 1",
+t2.cnt as "Кол-во строк 2", t2.max_st as "Дата начала промежутка 2", t2.min_st as "Дата конца промежутка 2",
+case when t2.cnt <> 0 then abs(1.0*(t1.cnt/t2.cnt-1)*100) else 100 end as "Отклониение 1 среза от 2" from
+(
+	select 'CST' as name, count(*) as cnt, min(eff_dttm) as max_st, max(eff_dttm) as min_st
+	from rtk_b2c.ZB2C_CHD_TFCT_CST
+	where {0}
+) t1
+join
+(
+	select *
+	from msiukhin.table_stat_cst
+	where stat = '{1}'
+) t2 on t1.name=t2.name;

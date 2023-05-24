@@ -1,0 +1,18 @@
+select 'rtk_b2c.ZB2C_CHD_TFCT_DMNT' as name_ish_t, 'rtk_b2c.ZB2C_CHD_TFCT_DMNT' as name_t, sum(charge_rub)/count(*) as sr_sum, count(*) as cnt,
+	max(eff_dttm) as max_eff_dttm, min(eff_dttm) as min_eff_dttm
+	from rtk_b2c.ZB2C_CHD_TFCT_DMNT
+	where 	charge_rub <> 0
+			and (
+					(
+						extract(day from current_date) > 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -2)), 1) and last_day(add_months(current_date, -1))
+					)
+				or
+					(
+						extract(day from current_date) <= 25
+						and eff_dttm between add_days(last_day(add_months(current_date, -3)), 1) and last_day(add_months(current_date, -2))
+					)
+				)
+				and mrf_id = {0}
+				and {1}
+	group by mrf_id

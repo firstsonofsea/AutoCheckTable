@@ -1,0 +1,1178 @@
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_amedia';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_amedia' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|киномания|wink.5.в.1|amedia|твой.премьерный|год.кино|для.праздников'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|киномания|wink.5.в.1|amedia|твой.премьерный|год.кино|для.праздников'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	 select distinct accn_id from rtk_b2c_business.CHD_TFCT_IPTV_SUBS_ON
+ 	 where lower(service_name) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|киномания|wink.5.в.1|amedia|твой.премьерный|год.кино|для.праздников'
+ 	  and service_status = 'Active' and deleted_ind = 0
+ 	  and lower(service_name) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости'
+ 	  and end_subs_date is null
+ 	  and mrf_id <> 16
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_vip';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_vip' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|vip|viasat|суперхиты|киномания|для.киноманов|wink.5.в.1|для.ценителей|твой.премьерный|для.развлечений|трансформер.акция|viju'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'vip|viju'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	and eff_dttm >= '30.09.2022'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_wink_5_in_1';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_wink_5_in_1' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|vip|viasat|суперхиты|киномания|для.киноманов|wink.5.в.1|start|more.tv|amedia|moretv|рб_тнг_доставка.сигнала.iptv|viju'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видим.|максимум выгоды|настр. видимости|vip1003g|скорость на максимум|шант премиум|цифровой домофон|книги_премиум подписка|mini_премиум|налич_гарант|книги_бессрочная премиум|тв-приставки|киноман.5.в.1'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'wink.5.в.1'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видим.|максимум выгоды|настр. видимости|vip1003g|скорость на максимум|шант премиум|цифровой домофон|книги_премиум подписка|mini_премиум|налич_гарант|книги_бессрочная премиум|тв-приставки|киноман.5.в.1'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_start';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_start' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|для.киноманов|wink.5.в.1|start|для.ценителей|киномания|для.киноманов|трансфор'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'start'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_more';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_more' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|для.киноманов|wink.5.в.1|трансформер.акция|more.tv|для.ценителей|для.развлечений|для.праздников'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|для.киноманов|wink.5.в.1|трансформер.акция|more.tv|для.ценителей|для.развлечений|для.праздников'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	 select distinct accn_id from rtk_b2c_business.CHD_TFCT_IPTV_SUBS_ON
+ 	 where lower(service_name) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|для.киноманов|wink.5.в.1|трансформер.акция|more.tv|для.ценителей|для.развлечений|для.праздников'
+ 	  and service_status = 'Active' and deleted_ind = 0
+ 	  and lower(service_name) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости'
+ 	  and end_subs_date is null
+ 	  and mrf_id = 10
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_transformer';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_transformer' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|трансформер'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|трансформер'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+ 	union all
+ 	 select distinct accn_id from rtk_b2c_business.CHD_TFCT_IPTV_SUBS_ON
+ 	 where lower(service_name) LIKE_REGEXPR 'максимальный|максимум|премиум|трансформер'
+ 	  and service_status = 'Active' and deleted_ind = 0
+ 	  and lower(service_name) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости'
+ 	  and end_subs_date is null
+ 	  and mrf_id = 10
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_nastroi_kino';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_nastroi_kino' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|настрой.кино|рб_тнг_доставка сигнала iptv'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видим.|максимум выгоды|настр. видимости|vip1003g|скорость на максимум|шант премиум|цифровой домофон|книги_премиум подписка|mini_премиум|налич_гарант|книги_бессрочная премиум|тв-приставки'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'настрой.кино'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видим.|максимум выгоды|настр. видимости|vip1003g|скорость на максимум|шант премиум|цифровой домофон|книги_премиум подписка|mini_премиум|налич_гарант|книги_бессрочная премиум|тв-приставки'
+ 	and eff_dttm > '30.11.2022'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_wink_for_kids';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_wink_for_kids' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|суперхиты|настрой.кино|трансформер|для.праздников|подписка.лицей|vod.лицей|детский.клуб|каникулы|выгодная.фильмотека|viju'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"|архив.2021|арх.2021'
+ 	union all
+ 	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'wink.for.kids'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видимости|участник акции "максимум выгоды"'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_dr_web_prem';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_dr_web_prem' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'dr.*web.*прем|dr.*web.*prem'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'dr.*web.*прем|dr.*web.*prem'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_kasp_who_call';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_kasp_who_call' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'who.*call'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'who.*call'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_kasp_int_sec';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_kasp_int_sec' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'kasp.*int.*sec|каспер.*int.*sec|kis|антив.*каспер|антив.*kasper'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'kasp.*int.*sec|каспер.*int.*sec|kis|антив.*каспер|антив.*kasper'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_kasp_total_sec';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_kasp_total_sec' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'tot.*sec'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'tot.*sec'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_kasp_safe_kids';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_kasp_safe_kids' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'kasp.*saf.*kid|каспер.*saf.*kid|ksk'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'kasp.*saf.*kid|каспер.*saf.*kid|ksk'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_all_antivirus';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_all_antivirus' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'kasper|eset|nod32|dr.*web|kis|каспер|panda|antivir|антивир'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_book_base';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_book_base' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*баз|литрес.*баз|litres.*баз'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*баз|литрес.*баз|litres.*баз'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_book_audio';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_book_audio' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*ауд|литрес.*ауд|litres.*ауд'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*ауд|литрес.*ауд|litres.*ауд'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_book_all_inclusive';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_book_all_inclusive' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*вс.*вкл|литрес.*вс.*вкл|litres.*вс.*вкл'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книг.*вс.*вкл|литрес.*вс.*вкл|litres.*вс.*вкл'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_alpina';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_alpina' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'alpin|альпина'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'alpin|альпина'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_all_book';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_all_book' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'книги|литрес|litres|alpin|альпина'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_lyceum';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_lyceum' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'подп.*лицей|лицей.*плюс|лицей.*|лицей.*подп'
+	and status = 'Подключение'
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where lower(optn_name_full) LIKE_REGEXPR 'подп.*лицей|лицей.*плюс|лицей.*|лицей.*подп'
+);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_mg';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_mg' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where (lower(optn_name_full) LIKE_REGEXPR 'долгие.*разговоры|ветер.*перемен|ветеран|прямой.*договор|снова.*с.*нами|международный|ноль|звони|
+|безл.*казах|безл.*росс|междугород|подар|три.*в.*одном|минут|вся.*москва|гтс.*ота.*fttx|
+|гтс.*ота.*xdsl.*|.*безлимитный.*хdsl.*|.*безлимитный.*за.*1.*руб.*495.*496.*498.*без.*орг.*посл.*мили.*|.*эконом.*|
+|новоселы|дом.*ближе|три.*и.*навсегда|пакет.*adsl|твой.*gpon.*3|пакет.*ота.*домолинк.*xdsl|
+|телефон.*fttx.*фл|телефон.*домолинк.*adsl.*фл|без.*спус|больше.*говорить|безгр.*общение|
+|звони.*на.*межгород|любимый.*межгород|любимое.*направление|мой.*ростелеком|ноль.*внутри.*сети|
+|оптимал|пакет.*минут|общения|3.в.1.|0.*вн.*сети|запрет.*мг|пакет.*мг|будь.*на.*связи|
+|огранич.*мг|доп.*мг|любим.*мг|звони.*на.*меж|мин.*мг|мг.*доп|заказ.*мг|приост.*мг|
+|пакет.*2.*с.*орг.*мили.*fttb.*vdsl.*gpon|пакет.*3.*с.*орг.*мили.*fttx.*vdsl.*gpon|будь.*с.*нами|
+|твоя.*страна|транстелеком|мобильные.*теле.*системы|вымпелком|эквант|арктел|мегафон|огранич.*мг|
+|ветер.*перемен|общайся|долгие.*разговоры|больше.*говорить|безг.*общение|приостанов.*доступ.*мг|
+|вся.*страна|вся.*москва')
+or (lower(optn_name_full) LIKE_REGEXPR 'мтт|mtt' and mrf_id <> 12)
+or (lower(optn_name_full) LIKE_REGEXPR 'мтт|mtt' and lower(optn_name_full) LIKE_REGEXPR 'ртк' and mrf_id = 12)
+union all
+select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_ASRV
+	where (lower(TP_FULL) LIKE_REGEXPR 'долгие.*разговоры|ветер.*перемен|ветеран|прямой.*договор|снова.*с.*нами|международный|ноль|звони|
+|безл.*казах|безл.*росс|междугород|подар|три.*в.*одном|минут|вся.*москва|гтс.*ота.*fttx|
+|гтс.*ота.*xdsl.*|.*безлимитный.*хdsl.*|.*безлимитный.*за.*1.*руб.*495.*496.*498.*без.*орг.*посл.*мили.*|.*эконом.*|
+|новоселы|дом.*ближе|три.*и.*навсегда|пакет.*adsl|твой.*gpon.*3|пакет.*ота.*домолинк.*xdsl|
+|телефон.*fttx.*фл|телефон.*домолинк.*adsl.*фл|без.*спус|больше.*говорить|безгр.*общение|
+|звони.*на.*межгород|любимый.*межгород|любимое.*направление|мой.*ростелеком|ноль.*внутри.*сети|
+|оптимал|пакет.*минут|общения|3.в.1.|0.*вн.*сети|запрет.*мг|пакет.*мг|будь.*на.*связи|
+|огранич.*мг|доп.*мг|любим.*мг|звони.*на.*меж|мин.*мг|мг.*доп|заказ.*мг|приост.*мг|
+|пакет.*2.*с.*орг.*мили.*fttb.*vdsl.*gpon|пакет.*3.*с.*орг.*мили.*fttx.*vdsl.*gpon|будь.*с.*нами|
+|твоя.*страна|транстелеком|мобильные.*теле.*системы|вымпелком|эквант|арктел|мегафон|огранич.*мг|
+|ветер.*перемен|общайся|долгие.*разговоры|больше.*говорить|безг.*общение|приостанов.*доступ.*мг|
+|вся.*страна|вся.*москва')
+or (lower(TP_FULL) LIKE_REGEXPR 'мтт|mtt' and mrf_id <> 12)
+or (lower(TP_FULL) LIKE_REGEXPR 'мтт|mtt' and lower(TP_FULL) LIKE_REGEXPR 'ртк' and mrf_id = 12)
+union all
+select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_ALLTPB
+	where (lower(TP_FULL) LIKE_REGEXPR 'долгие.*разговоры|ветер.*перемен|ветеран|прямой.*договор|снова.*с.*нами|международный|ноль|звони|
+|безл.*казах|безл.*росс|междугород|подар|три.*в.*одном|минут|вся.*москва|гтс.*ота.*fttx|
+|гтс.*ота.*xdsl.*|.*безлимитный.*хdsl.*|.*безлимитный.*за.*1.*руб.*495.*496.*498.*без.*орг.*посл.*мили.*|.*эконом.*|
+|новоселы|дом.*ближе|три.*и.*навсегда|пакет.*adsl|твой.*gpon.*3|пакет.*ота.*домолинк.*xdsl|
+|телефон.*fttx.*фл|телефон.*домолинк.*adsl.*фл|без.*спус|больше.*говорить|безгр.*общение|
+|звони.*на.*межгород|любимый.*межгород|любимое.*направление|мой.*ростелеком|ноль.*внутри.*сети|
+|оптимал|пакет.*минут|общения|3.в.1.|0.*вн.*сети|запрет.*мг|пакет.*мг|будь.*на.*связи|
+|огранич.*мг|доп.*мг|любим.*мг|звони.*на.*меж|мин.*мг|мг.*доп|заказ.*мг|приост.*мг|
+|пакет.*2.*с.*орг.*мили.*fttb.*vdsl.*gpon|пакет.*3.*с.*орг.*мили.*fttx.*vdsl.*gpon|будь.*с.*нами|
+|твоя.*страна|транстелеком|мобильные.*теле.*системы|вымпелком|эквант|арктел|мегафон|огранич.*мг|
+|ветер.*перемен|общайся|долгие.*разговоры|больше.*говорить|безг.*общение|приостанов.*доступ.*мг|
+|вся.*страна|вся.*москва')
+or (lower(TP_FULL) LIKE_REGEXPR 'мтт|mtt' and mrf_id <> 12)
+or (lower(TP_FULL) LIKE_REGEXPR 'мтт|mtt' and lower(TP_FULL) LIKE_REGEXPR 'ртк' and mrf_id = 12)
+);
+
+delete FROM "RTK_B2C"."ZB2C_IMP_PERS_ATTR" WHERE NAME_LOAD = 'optn_tarif_licey_south';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'optn_tarif_licey_south' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+nal as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select distinct t1.accn_id,
+case when nal is not null then nal else 'Нет тарифа нет опции' end nal
+from rtk_b2c.ZB2C_CHD_TFCT_CLIENT_PROF t1
+left join (select accn_id,
+	case when nal = 3 then 'Есть тариф и опция'
+	when nal = 2 then 'Есть тариф нет опции'
+	when nal = 1 then 'Нет тарифа есть опция'
+	end nal
+from (
+select accn_id, max(nal) nal from (
+	select distinct accn_id,
+	case when (SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 3) = '1000003695'--тариф
+	and SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 2) = '1001720') then 3
+	when (SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 3) = '1000003695') then 2
+	 when (SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 2) = '1001720') then 1 end nal
+	from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+where MRF_SERVICE_KEY like '26%'
+and (SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 3) = '1000003695'--тариф
+	or SUBSTRING_REGEXPR('[[:digit:]]+' in MRF_SERVICE_KEY FROM 1 OCCURRENCE 2) = '1001720'))
+	group by accn_id)) t2 on t1.accn_id = t2.accn_id
+where t1.mrf_id = 14);
+
+delete  from "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+where name_load = 'DENY_TV_06_09_2922';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'DENY_TV_06_09_2922' as "NAME_LOAD",--пишем нужное нам название атрибута
+ACCN_ID,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"  from(
+select case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end as accn_id from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where (
+"Продукт1" in ('Для любителей кино (лок. ТФ)',
+	'Для своих',
+	'Интерактивное ТВ',
+	'КиноВип',
+	'Комбо 4 в 1',
+	'Комбо 4 в 1. Макси',
+	'Минимальный',
+	'Минимум',
+	'Пакет телеканалов "Стартовый"',
+	'Подключи ТВ',
+	'Технологии выгоды',
+	'Технологии выгоды PRO',
+	'Технологии Выгоды Акция',
+	'Технологии выгоды Макси',
+	'Технологии выгоды Онлайн',
+	'Технологии Выгоды Старт',
+	'Технологии выгоды. Включайте выгоду',
+	'Технологии выгоды+',
+	'Технологии развлечения',
+	'Технологии развлечения PRO',
+	'Технологии Развлечения Онлайн',
+	'Технологии Развлечения Старт',
+	'Технологии Развлечения Старт+',
+	'Трансформер',
+	'Базовый',
+	'Минимальный',
+	'Минимум') or
+"Продукт2" in ('Для любителей кино (лок. ТФ)',
+	'Для своих',
+	'Интерактивное ТВ',
+	'КиноВип',
+	'Комбо 4 в 1',
+	'Комбо 4 в 1. Макси',
+	'Минимальный',
+	'Минимум',
+	'Пакет телеканалов "Стартовый"',
+	'Подключи ТВ',
+	'Технологии выгоды',
+	'Технологии выгоды PRO',
+	'Технологии Выгоды Акция',
+	'Технологии выгоды Макси',
+	'Технологии выгоды Онлайн',
+	'Технологии Выгоды Старт',
+	'Технологии выгоды. Включайте выгоду',
+	'Технологии выгоды+',
+	'Технологии развлечения',
+	'Технологии развлечения PRO',
+	'Технологии Развлечения Онлайн',
+	'Технологии Развлечения Старт',
+	'Технологии Развлечения Старт+',
+	'Трансформер',
+	'Базовый',
+	'Минимальный',
+	'Минимум') or
+"Продукт3" in ('Для любителей кино (лок. ТФ)',
+	'Для своих',
+	'Интерактивное ТВ',
+	'КиноВип',
+	'Комбо 4 в 1',
+	'Комбо 4 в 1. Макси',
+	'Минимальный',
+	'Минимум',
+	'Пакет телеканалов "Стартовый"',
+	'Подключи ТВ',
+	'Технологии выгоды',
+	'Технологии выгоды PRO',
+	'Технологии Выгоды Акция',
+	'Технологии выгоды Макси',
+	'Технологии выгоды Онлайн',
+	'Технологии Выгоды Старт',
+	'Технологии выгоды. Включайте выгоду',
+	'Технологии выгоды+',
+	'Технологии развлечения',
+	'Технологии развлечения PRO',
+	'Технологии Развлечения Онлайн',
+	'Технологии Развлечения Старт',
+	'Технологии Развлечения Старт+',
+	'Трансформер',
+	'Базовый',
+	'Минимальный',
+	'Минимум')or
+"Продукт4" in ('Для любителей кино (лок. ТФ)',
+	'Для своих',
+	'Интерактивное ТВ',
+	'КиноВип',
+	'Комбо 4 в 1',
+	'Комбо 4 в 1. Макси',
+	'Минимальный',
+	'Минимум',
+	'Пакет телеканалов "Стартовый"',
+	'Подключи ТВ',
+	'Технологии выгоды',
+	'Технологии выгоды PRO',
+	'Технологии Выгоды Акция',
+	'Технологии выгоды Макси',
+	'Технологии выгоды Онлайн',
+	'Технологии Выгоды Старт',
+	'Технологии выгоды. Включайте выгоду',
+	'Технологии выгоды+',
+	'Технологии развлечения',
+	'Технологии развлечения PRO',
+	'Технологии Развлечения Онлайн',
+	'Технологии Развлечения Старт',
+	'Технологии Развлечения Старт+',
+	'Трансформер',
+	'Базовый',
+	'Минимальный',
+	'Минимум')or
+"Продукт5" in ('Для любителей кино (лок. ТФ)',
+	'Для своих',
+	'Интерактивное ТВ',
+	'КиноВип',
+	'Комбо 4 в 1',
+	'Комбо 4 в 1. Макси',
+	'Минимальный',
+	'Минимум',
+	'Пакет телеканалов "Стартовый"',
+	'Подключи ТВ',
+	'Технологии выгоды',
+	'Технологии выгоды PRO',
+	'Технологии Выгоды Акция',
+	'Технологии выгоды Макси',
+	'Технологии выгоды Онлайн',
+	'Технологии Выгоды Старт',
+	'Технологии выгоды. Включайте выгоду',
+	'Технологии выгоды+',
+	'Технологии развлечения',
+	'Технологии развлечения PRO',
+	'Технологии Развлечения Онлайн',
+	'Технологии Развлечения Старт',
+	'Технологии Развлечения Старт+',
+	'Трансформер',
+	'Базовый',
+	'Минимальный',
+	'Минимум')
+)
+and t1.account <> '?'
+and t1.pollduration>=0
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate > ADD_MONTHS(current_date, -6));
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'sale_not_available_wink_5_in_1_CRM';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'sale_not_available_wink_5_in_1_CRM' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+ 	(select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+ 	where lower(optn_name_full) LIKE_REGEXPR 'максимальный|максимум|премиум|vip|viasat|суперхиты|киномания|для.киноманов|wink.5.в.1|start|more.tv|amedia|moretv|рб_тнг_доставка.сигнала.iptv|viju'
+ 	and lower(optn_name_full) not LIKE_REGEXPR 'гарантия|kasp|dr.web|drweb|dr. web|настройка.видим.|максимум выгоды|настр. видимости|vip1003g|скорость на максимум|шант премиум|цифровой домофон|книги_премиум подписка|mini_премиум|налич_гарант|книги_бессрочная премиум|тв-приставки|киноман.5.в.1'
+);
+
+--клиенты, у которых подключен конвергент
+delete from RTK_B2C.ZB2C_IMP_PERS_ATTR where NAME_LOAD='HAS_KONV';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'HAS_KONV' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_CLIENT_PROF
+			where mvno_on <> 0
+	union all
+	select distinct accn_id from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+	where 	lower(optn_name_full) like '%+mvno%'
+			or lower(optn_name_full) like '%технологии выгоды%'
+			or lower(optn_name_full) like '%технологии общения%'
+			or lower(optn_name_full) like '%комбо игровой%'
+			or lower(optn_name_full) like '%технологии без границ%'
+			or lower(optn_name_full) like '%комбо 4 в 1%'
+			or lower(optn_name_full) like '%gp%'
+			or lower(optn_name_full) like '%пп %'
+			or lower(optn_name_full) like '%конв%'
+);
+
+--Не зафиксирован отказ от покупки в кампаниях ИТМ по допродаже конвергента в 2022-2023 году
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where name_load = 'NO_DENY_KONV_2022_2023';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_KONV_2022_2023' as "NAME_LOAD",--пишем нужное нам название атрибута
+account,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2" from(
+select distinct case when left(t1.account, 1) = '_' then right(t1.account, length(t1.account)-1) else t1.account end account
+from (
+--клиенты которые говорили согласен или им не дозвонились за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where ("Продукт1" in ('Технологии без границ+',
+'Технологии выгоды',
+'Технологии выгоды PRO',
+'Технологии выгоды+',
+'Технологии выгоды+. Макси',
+'Технологии выгоды. Включайте выгоду',
+'Технологии общения',
+'Технологии общения+',
+'Комбо 4 в 1',
+'Комбо 4 в 1. Макси',
+'Комбо Игровой',
+'Комбо Игровой 4 в 1',
+'Конвергент/MVNO'
+))
+and t1.account <> '?'
+and (t1.pollresult = 'Произведен обзвон. Согласен' or t1.pollresult = 'Произведен обзвон. Попытки исчерпаны')
+and t1.polldate >= '2022-01-01'
+and t1.polldate < current_date) t1
+left join (
+--клиенты которые говорили нет за 6 месяцев
+select distinct t1.account, t1.namebas from RTK_B2C.ZB2C_SAO_WH_ITM_FULL as t1
+join rtk_b2c_business.fact as t2 on SUBSTR_REGEXPR('([[:digit:]])*' in SUBSTR_REGEXPR('^([[:digit:]])*([[:punct:]]{1})' in t1.namebas))=t2.ID
+where ("Продукт1" in ('Технологии без границ+',
+'Технологии выгоды',
+'Технологии выгоды PRO',
+'Технологии выгоды+',
+'Технологии выгоды+. Макси',
+'Технологии выгоды. Включайте выгоду',
+'Технологии общения',
+'Технологии общения+',
+'Комбо 4 в 1',
+'Комбо 4 в 1. Макси',
+'Комбо Игровой',
+'Комбо Игровой 4 в 1',
+'Конвергент/MVNO'
+))
+and t1.account <> '?'
+and t1.pollduration>=10
+and t1.pollresult = 'Произведен обзвон. Отказ'
+and t1.polldate >= '2022-01-01'
+and t1.polldate < current_date)
+t2 on t1.account = t2.account and t1.namebas=t2.namebas
+where t2.account is NULL);

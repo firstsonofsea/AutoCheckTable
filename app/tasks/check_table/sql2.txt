@@ -1,0 +1,15 @@
+select '{0}' name_t_ish, '{1}' name_t, count(*) as kol, max(eff_dttm) as date_sr from {1}
+				where eff_dttm = (
+									select eff_dttm from
+										(
+											select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+												(
+												select distinct 'l' as gr, eff_dttm from {1}
+												where mrf_id = {3}
+												)
+										)
+									where r_numb = 2
+									)
+						and {2}
+						and mrf_id = {3}
+				group by mrf_id

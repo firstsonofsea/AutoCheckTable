@@ -1,0 +1,44 @@
+select t1.name_t as "Таблица 1", t1.mrf_id as "МРФ ИД", t1.kol as "Кол-во строк", t1.date_sr as "Дата среза",
+t2.name_t as "Таблица 2", t2.kol as "Кол-во строк", t2.date_sr as "Дата среза",
+case when t1.kol is not null and t2.kol is not null then abs(1.0*(t1.kol/t2.kol-1)*100) else 100 end as "Отклониение 1 среза от 2"
+from
+(
+	select * from msiukhin.table_mrf_id_not_centr
+	where mrf_id = {1}
+) t_mrf
+left join
+(
+				select 'rtk_b2c.ZB2C_CHD_TFCT_AOPT' name_t, mrf_id, count(*) as kol, max(eff_dttm) as date_sr from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+				where eff_dttm = (
+									select eff_dttm from
+									(
+										select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+											(
+											select distinct 'l' as gr, eff_dttm from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+											where mrf_id = {1}
+											)
+									)
+									where r_numb = 1
+								    )
+                        and {0}
+                        and mrf_id = {1}
+				group by mrf_id
+) t1 on t1.mrf_id = t_mrf.mrf_id
+left join
+(
+				select 'rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT' name_t, mrf_id, count(*) as kol, max(eff_dttm) as date_sr from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+				where to_date(eff_dttm) = (
+									select add_days(to_date(eff_dttm), -7) from
+										(
+											select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+												(
+												select distinct 'l' as gr, eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+												where mrf_id = {1}
+												)
+										)
+									where r_numb = 1
+									)
+						and {0}
+						and mrf_id = {1}
+				group by mrf_id
+) t2 on t1.name_t <> t2.name_t and t1.mrf_id = t2.mrf_id

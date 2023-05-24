@@ -1,0 +1,230 @@
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where "NAME_LOAD"='VP_DELIVERY_170522';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'VP_DELIVERY_170522' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join MSIUKHIN."DOST" t2 on TO_CHAR(t1."CITY_LID") = TO_CHAR(t2."CITY_LID") and t2."VN" = 1
+union all
+select accn_id from
+RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF"
+where mrf_id = 10
+union all
+select t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join MSIUKHIN.ug_city t2 on TO_CHAR(t1.city) = TO_CHAR(t2.city_name));
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where "NAME_LOAD"='SIM_DELIVERY_170522';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'SIM_DELIVERY_170522' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join MSIUKHIN.d_sim_fin1 t2 on TO_CHAR(t1."CITY_LID") = TO_CHAR(t2."CITY_LID")
+union all
+select accn_id from
+RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF"
+where mrf_id in (10, 11, 16)
+and bb_opt_on > 0
+union all
+select t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join msiukhin.d_ural t2 on TO_CHAR(t1.city) = TO_CHAR(t2.np)
+where t3.mrf_id = 15);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where "NAME_LOAD"='UK_DELIVERY_170522';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'UK_DELIVERY_170522' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join MSIUKHIN."DOST" t2 on TO_CHAR(t1."CITY_LID") = TO_CHAR(t2."CITY_LID") and t2."UK" = 1
+union all
+select accn_id from
+RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF"
+where mrf_id = 10);
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where "NAME_LOAD"='NO_DENY_TARIF_YANAO';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'NO_DENY_TARIF_YANAO' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select distinct t3.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t3
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t1 on t3."CM_ID" = t1."CM_ID"
+join MSIUKHIN.table_yak_np t2 on TO_CHAR(t1.city) = TO_CHAR(t2.city_name)
+join RTK_B2C.ZB2C_CHD_TFCT_ASRV t4 on t3.accn_id = t4.accn_id and t4.srvs_type = 'ШПД'
+where t3.region = 'Ямало-Ненецкий филиал')
+;
+
+delete from "RTK_B2C"."ZB2C_IMP_PERS_ATTR" where "NAME_LOAD"='volga_xdsl_stop';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'volga_xdsl_stop' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from (
+select distinct t1.accn_id
+from RTK_B2C."ZB2C_CHD_TFCT_CLIENT_PROF" t1
+join RTK_B2C."ZB2C_CHD_TFCT_DH" t2 on t1.cm_id = t2.cm_id
+join RTK_B2C.ZB2C_CHD_TFCT_ASRV t3 on t1.accn_id = t3.accn_id
+where
+t3.srvs_type = 'ШПД' and t3.srvs_tech = 'xDSL' and
+t1.mrf_id = 13 and
+	(
+		(city = 'Лунино' and city_type = 'Рабочий поселок' and rf_id = 1305)
+ 		or
+ 		(city = 'Адамовка' and city_type = 'Поселок' and rf_id = 1304)
+ 		or
+ 		(city = 'Домбаровский' and city_type = 'Поселок' and rf_id = 1304)
+ 		or
+ 		(city = 'Кваркино' and city_type = 'Поселок' and rf_id = 1304)
+ 		or
+ 		(city = 'Советский' and city_type = 'Поселок городского типа'  and rf_id = 1309)
+ 		or
+ 		(city = 'Белебей' and city_type = 'Город' and rf_id = 1314)
+ 		or
+ 		(city = 'Воскресенское' and city_type = 'Деревня' and rf_id = 1314)
+ 		or
+ 		(city = 'Дмитриевка' and city_type = 'Село' and rf_id = 1314)
+ 		or
+ 		(city = 'Дорогино' and city_type = 'Село' and rf_id = 1314)
+ 		or
+ 		(city = 'Ласточка' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Лесной' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Подлесное' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Полянка' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Самойловка' and city_type = 'Деревня' and rf_id = 1314)
+ 		or
+ 		(city = 'Солнечный' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Тюляково' and city_type = 'Деревня' and rf_id = 1314)
+ 		or
+ 		(city = 'Урман-Бишкадак' and city_type = 'Село' and rf_id = 1314)
+ 		or
+ 		(city = 'Усень' and city_type = 'Микрорайон' and rf_id = 1314)
+ 		or
+ 		(city = 'Яр-Бишкадак' and city_type = 'Деревня' and rf_id = 1314)
+ 	)
+ )
+ 		;

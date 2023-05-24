@@ -1,0 +1,134 @@
+DELETE FROM "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+WHERE NAME_LOAD = 'EXEPTION_MAIN';
+
+insert into "RTK_B2C"."ZB2C_IMP_PERS_ATTR"
+select distinct
+'EXEPTION_MAIN' as "NAME_LOAD",--пишем нужное нам название атрибута
+accn_id,
+0 as "NUMBER_20_01",
+0 as "NUMBER_20_02",
+0 as "NUMBER_20_03",
+0 as "NUMBER_20_04",
+0 as "NUMBER_20_05",
+0 as "NUMBER_20_06",
+0 as "NUMBER_20_07",
+0 as "NUMBER_20_08",
+0 as "NUMBER_20_09",
+0 as "NUMBER_20_10",
+'' as "STRING_100_01",
+'' as "STRING_100_02",
+'' as "STRING_100_03",
+'' as "STRING_100_04",
+'' as "STRING_100_05",
+'' as "STRING_3000_01",
+'' as "STRING_3000_02",
+'' as "STRING_3000_03",
+'' as "DATE_1",
+'' as "DATE_2"
+from
+(
+	SELECT DISTINCT root.ZZ1_B2C_ACCN_ID_MPS as accn_id
+	FROM SAPHANADB.CUAND_CE_IC_ROOT root
+	LEFT JOIN "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.rtk/ZB2C_CV_CLIENT_PROF_V2" client ON root.DB_KEY = client.DB_KEY
+	LEFT JOIN "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.rtk/ZB2C_CV_CNTR"           cntr   ON root.DB_KEY = cntr.DB_KEY
+	join (	select accn_id
+			from "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.rtk/ZB2C_CV_CONTACT_DETAILS"
+			where main_phone LIKE_REGEXPR '^[1-9]{1}[0-9]{9}'
+			and FIO_CSTM is not null
+			and lower(FIO_CSTM) not like '*цесси*') t_cont on root.ZZ1_B2C_ACCN_ID_MPS = t_cont.accn_id
+	WHERE     1=1
+	      AND root.ZZ1_B2C_ACCN_ID_MPS != ''
+	      AND root.ZZ1_B2C_ACCN_ID_MPS IS NOT NULL
+	      AND root.DB_KEY NOT IN (
+	                              SELECT ban.DB_KEY
+	                              FROM "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.rtk/ZB2C_CV_BAN" ban
+	                              WHERE ban.BAN_CALL = 1 OR ban.BAN_COM = 1
+	                             )
+	      AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+	                              SELECT blka.accn_id
+	                              FROM "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.rtk/ZB2C_CV_BLKA" blka
+	                              WHERE blka.BLOCK_TYPE_NAME IN ('Блокировка по финансовым причинам','Блокировка по техническим причинам','Добровольная блокировка')
+	                                    AND blka.BLOCK_STATUS_ID = 1
+	                             )
+	      AND cntr.CNTR_STATUS = 1
+	      AND client.ACCN_STATUS = 'активен'
+	      AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+	      										select accn_id
+	      										from RTK_B2C.ZB2C_IMP_PERS_ATTR
+												where name_load in ('VIP_ABON_RTK', 'ural_avans_19_08_22', 'ALLADIN', 'NOT_ACTIVE'))
+	      AND client.RF_ID IN (
+	                           SELECT TO_CHAR("ID РФ клиента")
+	                           FROM RVARDANYAN.idrf
+	                           where TO_CHAR("ID РФ клиента") not in ('1315','14999','1501')
+	                          )
+	      AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+										      	select accn_id
+												from rtk_b2c.ZB2C_CHD_TFCT_client_prof
+												where
+												(
+													block_status = 1
+													or BAN_COM = 1
+												)
+												or
+												(
+													rf_id in (1315,14999,1501)
+													or region is null
+											   )
+											   )
+		  --AND root.ZZ1_B2C_ACCN_ID_MPS IN (
+		 --								      	select accn_id
+		--										from "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact.calcattr/ZB2C_CV_CALC_ATTR_SCRPT"
+		--										where atribute_02=1
+		--									   )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+										      	select accn_id
+												from rtk_b2c.ZB2C_CHD_TFCT_asrv
+												where (lower(tp_full) like '%альянс%'
+												or lower(tp_full) like '%атк%')
+												or (srvs_region = 'Столичный филиал'
+												and (lower(tp_full) like '%tele2%'
+												or lower(tp_full) like '%теле2%'))
+											   )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+										      	select accn_id
+												from rtk_b2c.ZB2C_CHD_TFCT_client_prof t1
+												join rtk_b2c.ZB2C_CHD_TFCT_dh t2 on t1.cm_id = t2.cm_id
+												where full_address is null
+												and full_address = ''
+												and t1.mrf_id <> 10
+											   )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+										      	select accn_id
+												from rtk_b2c.ZB2C_CHD_TFCT_aopt
+												where optn_name_full like '%Запрет предварительной обзвонки%'
+												or optn_name_full like '%Отказ абонента от обработки перс.данных%'
+												or optn_name_full like '%Отказ от информирования%'
+												or optn_name_full like '%Отказ от маркетинговых%'
+												or optn_name_full like '%Отказ от передачи персональных%'
+												or optn_name_full like '%Отказ от рекламы%'
+												or mrf_service_key in ('11316','114034','25508','26647','40560','5002532','53109','98010','98070','98072','98079','98358')
+											   )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  										select to_char(accn_id) from msiukhin.table_my_ban
+		  									  )
+
+		  --AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  --										select to_char(accn_id) from msiukhin.table_isk
+		  				--					  )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  										SELECT distinct ZZ1_B2C_ACCN_ID_MPS
+												from "_SYS_BIC"."zsap.b2c.hana-app.cuan.contact/ZB2C_CA_C_CONTACT_INTERACTIONS"
+												where ZZ1_B2C_RF_MPS in ('1315','14999','1501')
+		  									  )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  										select to_char(accn_id) from msiukhin.table_iskl_itm
+                                                where current_date < '2023-12-20'
+		  									  )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  										select to_char(accn_id) from msiukhin.exception_table_unicom
+		  									  )
+		  AND root.ZZ1_B2C_ACCN_ID_MPS NOT IN (
+		  										select accn_id from rtk_b2c.V_CV_ZAPRET_INFO
+                                                where lower(ban_name) in ('запрет любых коммуникаций', 'запрет обзвон')
+		  									  )
+);

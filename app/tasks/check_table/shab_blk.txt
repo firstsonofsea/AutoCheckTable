@@ -1,0 +1,29 @@
+select t1.name as "Название таблицы", t1.mrf_id as "МРФ ИД",
+t1.cnt as "Кол-во строк 1", t1.max_st as "Дата начала промежутка 1", t1.min_st as "Дата конца промежутка 1",
+t2.cnt as "Кол-во строк 2", t2.max_st as "Дата начала промежутка 2", t2.min_st as "Дата конца промежутка 2",
+case when t1.cnt is not null and t2.cnt is not null then abs(1.0*(t1.cnt/t2.cnt-1)*100) else 100 end as "Отклониение 1 среза от 2"
+from
+(
+	select * from msiukhin.table_mrf_id_not_centr
+) t_mrf
+left join
+(
+	select '{0}' as name, MRF_ID, count(*) as cnt, max(block_chng_dt) as max_st, min(block_chng_dt) as min_st
+	from {1}
+	where 	(
+				block_chng_dt between add_days(current_date, -9) and add_days(current_date, -3)
+			)
+	and {2}
+    group by mrf_id
+) t1 on t1.mrf_id = t_mrf.mrf_id
+join
+(
+	select '{0}' as name, MRF_ID, count(*) as cnt, max(block_chng_dt) as max_st, min(block_chng_dt) as min_st
+	from {1}
+	where
+			(
+				block_chng_dt between add_months(add_days(current_date, -9) ,-1) and add_months(add_days(current_date, -3), -1)
+			)
+	and {2}
+    group by mrf_id
+) t2 on t1.name=t2.name and t1.mrf_id=t2.mrf_id;

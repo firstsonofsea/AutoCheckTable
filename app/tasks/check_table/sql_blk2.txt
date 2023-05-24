@@ -1,0 +1,8 @@
+select '{0}' as name_ish_t, '{0}' as name_t, count(*) as cnt, max(block_chng_dt) as max_st, min(block_chng_dt) as min_st, mrf_id
+	from {0}
+	where
+			(
+				block_chng_dt between add_months(add_days(current_date, -9) ,-1) and add_months(add_days(current_date, -3), -1)
+			)
+	and {1}
+    group by mrf_id

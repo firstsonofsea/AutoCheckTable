@@ -1,0 +1,15 @@
+{% extends 'bootstrap/base.html' %}
+    {% block navbar %}
+        <nav class="navbar navbar-default">
+            Простой задачник нашей команда:
+            <a href="/index">Главная</a>
+            <a href="/table_info">Информация о таблицах</a>
+        </nav>
+        <hr>
+    {% endblock %}
+{% block content %}
+    <div class="container">
+        {% block app_content %}
+        {% endblock %}
+    </div>
+{% endblock %}

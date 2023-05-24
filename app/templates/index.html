@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block app_content  %}
+    <body>
+    <table class="table table-hover">
+        <tr>
+            <td>Название</td>
+            <td>Информация</td>
+            <td>Дата последнего запуска</td>
+            <td>Статус последнего запуска</td>
+        </tr>
+        {% for t in tasks %}
+    <tr>
+        <td><a href="/task/{{t.name}}">{{ t.name}}</a></td>
+        <td>{{ t.info }} </td>
+        <td>{{ t.last_run }} </td>
+        <td>{{ t.last_status }} </td>
+        <td>
+            <form action="/forward/{{t.name}}" method="post">
+                <button name="forwardBtn" type="submit">Запустить функцию</button>
+            </form>
+        </td>
+    </tr>
+        {% endfor %}
+    </table>
+    </body>
+{% endblock %}

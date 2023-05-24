@@ -1,0 +1,46 @@
+select * from
+(
+				select 'ZB2C_CHD_TFCT_CLIENT_PROF' name_t, mrf_id, count(*), max(eff_dttm) eff_dttm from rtk_b2c.ZB2C_CHD_TFCT_CLIENT_PROF
+				where eff_dttm = (
+									select eff_dttm from
+									(
+										select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+											(
+											select distinct 'l' as gr, eff_dttm from rtk_b2c.ZB2C_CHD_TFCT_CLIENT_PROF
+											)
+									)
+									where r_numb = 1
+									)
+				group by mrf_id
+) t1
+join
+(
+				select 'stg_ZB2C_CHD_TFCT_CLIENT_PROF' name_t, mrf_id, count(*), max(eff_dttm) eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_CLIENT_PROF
+				where eff_dttm = (
+									select eff_dttm from
+										(
+											select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+												(
+												select distinct 'l' as gr, eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_CLIENT_PROF
+												)
+										)
+									where r_numb = 2
+									)
+				group by mrf_id
+) t2 on t1.name_t <> t2.name_t and t1.mrf_id = t2.mrf_id
+join
+(
+				select 'stg_ZB2C_CHD_TFCT_CLIENT_PROF' name_t, mrf_id, count(*), max(eff_dttm) eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_CLIENT_PROF
+				where eff_dttm = (
+									select eff_dttm from
+									(
+										select row_number() over(partition by gr order by eff_dttm asc) as r_numb, eff_dttm from
+											(
+											select distinct 'l' as gr, eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_CLIENT_PROF
+												where eff_dttm >= add_months(current_date, -3)
+											)
+										)
+									where r_numb = 1
+									)
+				group by mrf_id
+) t3 on t1.name_t <> t3.name_t and t1.mrf_id = t3.mrf_id;

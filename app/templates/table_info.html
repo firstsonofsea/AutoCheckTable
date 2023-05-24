@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block app_content  %}
+    <body>
+    <table class="table table-hover">
+        <tr>
+            <td>Название таблицы</td>
+            <td>Дата прошлого замера</td>
+            <td>Результат прошлого замера</td>
+            <td>Дата актуального замера</td>
+            <td>Результат актуального замера</td>
+            <td>Отношение замеров в %(старый к новому)</td>
+        </tr>
+        {% for i in info %}
+    <tr>
+        <td>{{ i.name}}</a></td>
+        <td>{{ i.date_old }} </td>
+        <td>{{ i.count_old }} </td>
+        <td>{{ i.date_act }} </td>
+        <td>{{ i.count_act }} </td>
+        <td>{{ i.delta }} </td>
+    </tr>
+        {% endfor %}
+    </table>
+    </body>
+{% endblock %}

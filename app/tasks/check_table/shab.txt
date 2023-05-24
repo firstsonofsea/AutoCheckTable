@@ -1,0 +1,157 @@
+--до 5 пункта
+select * from
+(
+				select 'ZB2C_CHD_TFCT_AOPT' name_t, count(*), max(eff_dttm) eff_dttm from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+				where eff_dttm = (
+									select eff_dttm from
+									(
+										select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+											(
+											select distinct 'l' as gr, eff_dttm from rtk_b2c.ZB2C_CHD_TFCT_AOPT
+											)
+									)
+									where r_numb = 1
+									)
+) t1
+join
+(
+				select 'STG_ZB2C_CHD_TFCT_AOPT' name_t, count(*), max(eff_dttm) eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+				where eff_dttm = (
+									select eff_dttm from
+										(
+											select row_number() over(partition by gr order by eff_dttm desc) as r_numb, eff_dttm from
+												(
+												select distinct 'l' as gr, eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+												)
+										)
+									where r_numb = 2
+									)
+) t2 on t1.name_t <> t2.name_t
+join
+(
+				select 'STG_ZB2C_CHD_TFCT_AOPT' name_t, count(*), max(eff_dttm) eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+				where eff_dttm = (
+									select eff_dttm from
+									(
+										select row_number() over(partition by gr order by eff_dttm asc) as r_numb, eff_dttm from
+											(
+											select distinct 'l' as gr, eff_dttm from rtk_b2c.stg_ZB2C_CHD_TFCT_AOPT
+												where eff_dttm >= add_months(current_date, -1)
+											)
+										)
+									where r_numb = 1
+									)
+) t3 on t1.name_t <> t3.name_t;
+
+--6 пункт
+select * from
+(
+	select 'ZB2C_CHD_TFCT_DMNT' as name, count(*), max(eff_dttm), min(eff_dttm) from rtk_b2c.ZB2C_CHD_TFCT_DMNT
+	where 	charge_rub <> 0
+			and (
+					(
+						extract(day from current_date) > 15
+						and eff_dttm between add_days(last_day(add_months(current_date, -2)), 1) and last_day(add_months(current_date, -1))
+					)
+				or
+					(
+						extract(day from current_date) <= 15
+						and eff_dttm between add_days(last_day(add_months(current_date, -3)), 1) and last_day(add_months(current_date, -2))
+					)
+				)
+) t1
+join
+(
+	select 'ZB2C_CHD_TFCT_DMNT' as name, count(*), max(eff_dttm), min(eff_dttm) from rtk_b2c.ZB2C_CHD_TFCT_DMNT
+	where 	charge_rub <> 0
+			and (
+					(
+						extract(day from current_date) > 15
+						and eff_dttm between add_days(last_day(add_months(current_date, -3)), 1) and last_day(add_months(current_date, -2))
+					)
+				or
+					(
+						extract(day from current_date) <= 15
+						and eff_dttm between add_days(last_day(add_months(current_date, -4)), 1) and last_day(add_months(current_date, -3))
+					)
+				)
+) t2 on t1.name=t2.name;
+
+--7 пункт
+select * from
+(
+	select 'DOPT' as name, count(*), max(status_change_date), min(status_change_date) from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where 	(
+				weekday(current_date) >= 3
+				and status_change_date between add_days(current_date, -1*weekday(current_date)-7) and add_days(current_date, -1*weekday(current_date)-1)
+			)
+			or
+			(
+				weekday(current_date) < 3
+				and status_change_date between add_days(current_date, -1*weekday(current_date)-14) and add_days(current_date, -1*weekday(current_date)-8)
+			)
+
+
+) t1
+join
+(
+	select 'DOPT' as name, count(*), max(status_change_date), min(status_change_date) from rtk_b2c.ZB2C_CHD_TFCT_DOPT
+	where 	(
+				weekday(current_date) >= 3
+				and status_change_date between add_months(add_days(current_date, -1*weekday(current_date)-7), -1)
+					and add_months(add_days(current_date, -1*weekday(current_date)-1), -1)
+			)
+			or
+			(
+				weekday(current_date) < 3
+				and status_change_date between add_months(add_days(current_date, -1*weekday(current_date)-14) ,-1)
+					and add_months(add_days(current_date, -1*weekday(current_date)-8), -1)
+			)
+
+
+) t2 on t1.name=t2.name;
+
+--8 и 9 пункт
+select * from
+(
+	select 'BLKA' as name, count(*), max(block_chng_dt), min(block_chng_dt) from rtk_b2c.ZB2C_CHD_TFCT_BLKA
+	where 	(
+				block_chng_dt between add_days(current_date, -9) and add_days(current_date, -3)
+			)
+
+
+) t1
+join
+(
+	select 'BLKA' as name, count(*), max(block_chng_dt), min(block_chng_dt) from rtk_b2c.ZB2C_CHD_TFCT_BLKA
+	where
+			(
+				block_chng_dt between add_months(add_days(current_date, -9) ,-1) and add_months(add_days(current_date, -3), -1)
+			)
+
+
+) t2 on t1.name=t2.name;
+
+--10 пункт
+
+select * from
+(
+	select 'ITM' as name, count(*), max(polldate), min(polldate) from rtk_b2c.ZB2C_SAO_WH_ITM_FULL
+	where 	(
+				polldate between add_days(current_date, -8) and add_days(current_date, -2)
+				and lower(namebas) like '%itm%'
+			)
+
+
+) t1
+join
+(
+	select 'ITM' as name, count(*), max(polldate), min(polldate) from rtk_b2c.ZB2C_SAO_WH_ITM_FULL
+	where
+			(
+				polldate between add_months(add_days(current_date, -8) ,-1) and add_months(add_days(current_date, -2), -1)
+				and lower(namebas) like '%itm%'
+			)
+
+
+) t2 on t1.name=t2.name
