@@ -21,3 +21,11 @@ class InfoRun(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     status = db.Column(db.Boolean, default=False)
     info = db.Column(db.Text)
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    Name = db.Column(db.String(64))
+    cr_date = db.Column(db.DateTime, default=datetime.utcnow)
+    role = db.Column(db.Boolean, default=False)
+    info = db.Column(db.Text)
